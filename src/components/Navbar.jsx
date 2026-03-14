@@ -21,8 +21,6 @@ export const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
-
-      // Active section detect karo
       const sections = navItems.map((item) => item.href.replace("#", ""));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -32,7 +30,6 @@ export const Navbar = () => {
         }
       }
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -45,6 +42,7 @@ export const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between">
+
         {/* Logo */}
         <a className="text-xl font-bold text-primary flex items-center" href="#hero">
           <span className="relative z-10">
@@ -53,7 +51,7 @@ export const Navbar = () => {
           </span>
         </a>
 
-        {/* Desktop Nav */}
+        {/* Desktop Nav + ThemeToggle same line */}
         <div className="hidden md:flex items-center gap-1">
           {navItems.map((item, key) => {
             const isActive = activeSection === item.href.replace("#", "");
@@ -62,7 +60,7 @@ export const Navbar = () => {
                 key={key}
                 href={item.href}
                 className={cn(
-                  "relative px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300",
+                  "px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300",
                   "hover:-translate-y-0.5 hover:shadow-md",
                   isActive
                     ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
@@ -73,19 +71,23 @@ export const Navbar = () => {
               </a>
             );
           })}
-          <div className="ml-2">
+          {/* ThemeToggle same row mein, same height */}
+          <div className="flex items-center ml-1 mt-1">
             <ThemeToggle />
           </div>
         </div>
 
         {/* Mobile Hamburger */}
-        <button
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="md:hidden p-2 text-foreground z-50"
-          aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="p-2 text-foreground z-50"
+            aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
 
         {/* Mobile Menu */}
         <div
@@ -116,6 +118,7 @@ export const Navbar = () => {
             })}
           </div>
         </div>
+
       </div>
     </nav>
   );
